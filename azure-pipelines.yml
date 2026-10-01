@@ -29,23 +29,16 @@ stages:
       name: 'VMSSNikeCopy'
     steps:
     - script: |
-        set -e
-         
         sudo apt-get update --fix-missing
-        sudo apt-get install -y nodejs npm docker.io --fix-missing
+        sudo apt-get install -y docker.io --fix-missing
          
         sudo systemctl enable --now docker
-         
-        # Allow the current Azure DevOps agent process to access Docker
         sudo chmod 666 /var/run/docker.sock
          
-        echo "Docker installation:"
-        which docker
         docker --version
-         
-        echo "Docker access:"
         docker ps
       displayName: 'Install Tools and Enable Docker Access'
+
         
     - script: |
         set -e
