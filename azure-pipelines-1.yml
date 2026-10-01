@@ -44,3 +44,6 @@ steps:
      
     sudo docker ps
   displayName: Test Docker Group
+- script: |
+    sudo docker build -t todotask:$(Build.BuildId) .
+  displayName: Test Docker Build
