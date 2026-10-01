@@ -84,4 +84,5 @@ stages:
                     --registry-login-server $(containerRegistry) \
                     --registry-username acrtodo  \
                     --registry-password 6FHimAUQANQCN19EWCkD0CWn3W6im4GU41bsmXKq7pvPtWWHrcGwJQQJ99CJACMsfrFEqg7NAAACAZCR8haY \
-                    --dns-name-label acrtodo.azurecr.io
+                    --os-type Linux \
+                    --dns-name-label acrtodo
