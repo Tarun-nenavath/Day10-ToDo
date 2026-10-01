@@ -72,7 +72,18 @@ stages:
         docker ps
       displayName: Check Docker Access
 
-    
+    - script: |
+        echo "Pipeline process:"
+        id
+         
+        echo ""
+        echo "Stored account:"
+        id AzDevOps
+         
+        echo ""
+        echo "Docker test:"
+        docker ps
+      displayName: 'Compare User Context'  
     
     
     - task: Docker@2
