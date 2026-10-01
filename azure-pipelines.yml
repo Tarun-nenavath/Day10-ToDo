@@ -1,3 +1,7 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
 trigger:
 - main
 
@@ -5,55 +9,82 @@ resources:
 - repo: self
 
 variables:
+  # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '36735474-e99b-4334-b5e5-22ea3c731501'
   imageRepository: 'todotask'
   containerRegistry: 'acrtodo.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
+  # Agent VM image name
+  name: 'VMSSNikeCopy'
+
 stages:
 - stage: Build
-  displayName: 'Build and push stage'
-
+  displayName: Build and push stage
   jobs:
   - job: Build
-    displayName: 'Build'
-
+    displayName: Build
     pool:
       name: 'VMSSNikeCopy'
-
     steps:
-    - checkout: self
+    - script: |
+        sudo apt-get update
+        sudo apt-get install -y nodejs npm docker.io
+      displayName: Install Tools
 
     - script: |
-        echo "Current user:"
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      displayName: Install Azure CLI
+
+    
+    - script: |
+        sudo usermod -aG docker AzDevOps
+         
+        echo "After adding:"
+        id AzDevOps
+      displayName: 'Add AzDevOps To Docker Group'
+
+    - script: |
+        echo "Docker group entry:"
+        getent group docker
+         
+        echo ""
+        echo "AzDevOps user:"
+        id AzDevOps
+      displayName: 'Check Docker Group Membership'
+    
+
+    - script: |
+        echo "Current User:"
         whoami
-
-        echo "Current groups:"
+         
+        echo "User Details:"
+        id
+         
+        echo "Groups:"
         groups
-
-        echo "Installed tools:"
-        az --version
-        docker --version
-        node --version
-        npm --version
-
-        echo "Docker access test:"
+         
+        echo "Docker Socket:"
+        ls -l /var/run/docker.sock
+         
+        echo "Docker Test:"
         docker ps
-      displayName: 'Verify VMSS Agent Tools'
+      displayName: Check Docker Access
 
+    
+    
+    
     - task: Docker@2
-      displayName: 'Build and push image to ACR'
+      displayName: Build and push an image to container registry
       inputs:
-        command: 'buildAndPush'
-        repository: '$(imageRepository)'
-        dockerfile: '$(dockerfilePath)'
-        containerRegistry: '$(dockerRegistryServiceConnection)'
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-
     - task: AzureCLI@3
-      displayName: 'Deploy Azure Container Instance'
       inputs:
         connectionType: 'azureRM'
         azureSubscription: 'Azure subscription 1(9e8fab54-2295-4a0b-a7f2-915167edc02f)'
@@ -61,10 +92,10 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           az container create \
-            --name acrtodo \
-            --resource-group Day10-acr \
-            --image "$(containerRegistry)/$(imageRepository):$(tag)" \
-            --registry-login-server "$(containerRegistry)" \
-            --registry-username "$(ACR_USERNAME)" \
-            --registry-password "$(ACR_PASSWORD)" \
-            --dns-name-label acrtodo
+                    --name acrtodo \
+                    --resource-group Day10-acr \
+                    --image $(containerRegistry)/$(imageRepository):$(tag) \
+                    --registry-login-server $(containerRegistry) \
+                    --registry-username acrtodo  \
+                    --registry-password 6FHimAUQANQCN19EWCkD0CWn3W6im4GU41bsmXKq7pvPtWWHrcGwJQQJ99CJACMsfrFEqg7NAAACAZCR8haY \
+                    --dns-name-label acrtodo.azurecr.io
