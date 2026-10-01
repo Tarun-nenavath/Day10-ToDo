@@ -56,34 +56,21 @@ stages:
     
 
     - script: |
-        echo "Current User:"
-        whoami
-         
-        echo "User Details:"
+        echo "Process identity:"
         id
          
-        echo "Groups:"
-        groups
+        echo "Docker group:"
+        getent group docker
          
-        echo "Docker Socket:"
-        ls -l /var/run/docker.sock
+        echo "Docker binary:"
+        which docker
          
-        echo "Docker Test:"
-        docker ps
-      displayName: Check Docker Access
-
-    - script: |
-        echo "Pipeline process:"
-        id
+        echo "Docker version:"
+        docker --version || true
          
-        echo ""
-        echo "Stored account:"
-        id AzDevOps
-         
-        echo ""
-        echo "Docker test:"
-        docker ps
-      displayName: 'Compare User Context'  
+        echo "Docker daemon:"
+        sudo docker ps
+      displayName: Compare User Context  
     
     
     - task: Docker@2
