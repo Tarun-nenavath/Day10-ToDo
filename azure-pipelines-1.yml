@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -11,18 +6,23 @@ pool:
 
 steps:
 - script: |
-    id
-    groups
-    docker ps
-  displayName: Verify Docker
-- script: |
     echo "PATH=$PATH"
-     
+
+    echo "which docker"
     which docker || true
-     
+
+    echo "docker binary"
     ls -l /usr/bin/docker || true
-     
+
+    echo "sudo which docker"
     sudo which docker || true
-     
+
+    echo "sudo docker version"
     sudo docker --version || true
-  displayName: 'Verify Docker Installation'
+
+    echo "id"
+    id
+
+    echo "groups"
+    groups
+  displayName: Verify Docker Installation
