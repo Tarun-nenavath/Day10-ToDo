@@ -58,13 +58,7 @@ stages:
         node -v || true
         npm -v || true
       displayName: Check Agent Tools
-    - task: AzureCLI@3
-      inputs:
-        connectionType: 'azureRM'
-        azureSubscription: 'Azure subscription 1(9e8fab54-2295-4a0b-a7f2-915167edc02f)'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az acr login --name=$(containerRegistry)'
+    
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
