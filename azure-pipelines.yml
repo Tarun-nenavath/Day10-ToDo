@@ -85,4 +85,6 @@ stages:
                     --registry-username acrtodo  \
                     --registry-password 6FHimAUQANQCN19EWCkD0CWn3W6im4GU41bsmXKq7pvPtWWHrcGwJQQJ99CJACMsfrFEqg7NAAACAZCR8haY \
                     --os-type Linux \
+                    --cpu 1 \
+                    --memory 1.5 \
                     --dns-name-label acrtodo
