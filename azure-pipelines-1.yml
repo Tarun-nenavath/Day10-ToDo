@@ -6,11 +6,6 @@ pool:
 
 steps:
 - script: |
-    sudo apt-get update
-    sudo apt-get install -y docker.io
-
-    which docker
-    docker --version
-
-    sudo docker ps
-  displayName: Install and Verify Docker
+    curl -I http://azure.archive.ubuntu.com/ubuntu
+    nslookup azure.archive.ubuntu.com || true
+  displayName: 'Check Ubuntu Repository Connectivity'
