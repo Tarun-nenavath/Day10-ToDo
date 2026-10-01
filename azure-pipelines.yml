@@ -39,13 +39,6 @@ stages:
         docker ps
       displayName: 'Install Tools and Enable Docker Access'
 
-        
-    - script: |
-        sudo chmod 666 /var/run/docker.sock
-         
-        docker --version
-        docker ps
-      displayName: 'Install Tools and Enable Docker Access'
     
     
     - task: Docker@2
