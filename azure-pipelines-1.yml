@@ -36,3 +36,11 @@ steps:
     echo "Docker Access:"
     sudo docker ps
   displayName: Proof
+- script: |
+    sudo usermod -aG docker AzDevOps
+     
+    echo "After update:"
+    getent group docker
+     
+    sudo docker ps
+  displayName: Test Docker Group
