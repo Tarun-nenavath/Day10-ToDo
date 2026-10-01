@@ -61,6 +61,17 @@ stages:
         echo "Docker Test:"
         docker ps
       displayName: Check Docker Access
+
+    - script: |
+        echo "=== ID ==="
+        id
+         
+        echo "=== GROUPS ==="
+        groups
+         
+        echo "=== DOCKER TEST ==="
+        docker ps || true
+      displayName: 'Docker Permission Check'
     - script: |
         echo "Checking agent"
         whoami
