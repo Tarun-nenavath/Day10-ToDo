@@ -41,12 +41,11 @@ stages:
 
         
     - script: |
-        if ! command -v az >/dev/null 2>&1; then
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-        fi
+        sudo chmod 666 /var/run/docker.sock
          
-        az --version
-      displayName: 'Install Azure CLI' 
+        docker --version
+        docker ps
+      displayName: 'Install Tools and Enable Docker Access'
     
     
     - task: Docker@2
