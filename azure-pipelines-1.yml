@@ -15,3 +15,14 @@ steps:
     groups
     docker ps
   displayName: Verify Docker
+- script: |
+    echo "PATH=$PATH"
+     
+    which docker || true
+     
+    ls -l /usr/bin/docker || true
+     
+    sudo which docker || true
+     
+    sudo docker --version || true
+  displayName: 'Verify Docker Installation'
