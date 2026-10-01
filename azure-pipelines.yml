@@ -28,6 +28,19 @@ stages:
     pool:
       name: 'VMSSNikeCopy'
     steps:
+    - script: |
+        echo "Checking agent"
+        whoami
+         
+        which az || echo "az not found"
+        which docker || echo "docker not found"
+        which node || echo "node not found"
+         
+        az --version || true
+        docker --version || true
+        node -v || true
+        npm -v || true
+        displayName: Check Agent Tools
     - task: AzureCLI@3
       inputs:
         connectionType: 'azureRM'
