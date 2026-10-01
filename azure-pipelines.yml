@@ -44,7 +44,23 @@ stages:
          
         echo "Docker group updated"
       displayName: 'Fix Docker Permissions'
-        
+
+    - script: |
+        echo "Current user:"
+        whoami
+
+        echo ""
+        echo "Groups:"
+        groups
+
+        echo ""
+        echo "Docker socket:"
+        ls -l /var/run/docker.sock
+
+        echo ""
+        echo "Docker service:"
+        sudo systemctl status docker --no-pager
+      displayName: Check Docker Permissions
     - script: |
         echo "Checking agent"
         whoami
