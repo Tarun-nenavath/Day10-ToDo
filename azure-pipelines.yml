@@ -57,6 +57,19 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+    - script: |
+        sudo apt-get update --fix-missing
+        sudo apt-get install -y curl apt-transport-https ca-certificates gnupg --fix-missing
+         
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+         
+        az --version
+      displayName: Install Azure CLI
+
+    - script: |
+        which az
+        az --version
+      displayName: Verify Azure CLI
     - task: AzureCLI@3
       inputs:
         connectionType: 'azureRM'
