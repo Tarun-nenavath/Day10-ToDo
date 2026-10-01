@@ -16,3 +16,7 @@ steps:
 
     sudo docker ps
   displayName: 'Install Docker'
+- script: |
+    sudo docker ps
+    sudo docker version
+  displayName: Test Docker
