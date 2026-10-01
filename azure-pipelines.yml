@@ -46,21 +46,21 @@ stages:
       displayName: 'Fix Docker Permissions'
 
     - script: |
-        echo "Current user:"
+        echo "Current User:"
         whoami
-
-        echo ""
+         
+        echo "User Details:"
+        id
+         
         echo "Groups:"
         groups
-
-        echo ""
-        echo "Docker socket:"
+         
+        echo "Docker Socket:"
         ls -l /var/run/docker.sock
-
-        echo ""
-        echo "Docker service:"
-        sudo systemctl status docker --no-pager
-      displayName: Check Docker Permissions
+         
+        echo "Docker Test:"
+        docker ps
+      displayName: Check Docker Access
     - script: |
         echo "Checking agent"
         whoami
