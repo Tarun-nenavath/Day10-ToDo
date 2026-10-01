@@ -6,23 +6,11 @@ pool:
 
 steps:
 - script: |
-    echo "PATH=$PATH"
+    sudo apt-get update
+    sudo apt-get install -y docker.io
 
-    echo "which docker"
-    which docker || true
+    which docker
+    docker --version
 
-    echo "docker binary"
-    ls -l /usr/bin/docker || true
-
-    echo "sudo which docker"
-    sudo which docker || true
-
-    echo "sudo docker version"
-    sudo docker --version || true
-
-    echo "id"
-    id
-
-    echo "groups"
-    groups
-  displayName: Verify Docker Installation
+    sudo docker ps
+  displayName: Install and Verify Docker
