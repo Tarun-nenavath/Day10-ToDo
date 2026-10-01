@@ -29,48 +29,33 @@ stages:
       name: 'VMSSNikeCopy'
     steps:
     - script: |
-        sudo apt-get update
-        sudo apt-get install -y nodejs npm docker.io
-      displayName: Install Tools
-
-    - script: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      displayName: Install Azure CLI
-
-    
-    - script: |
-        sudo usermod -aG docker AzDevOps
+        set -e
          
-        echo "After adding:"
-        id AzDevOps
-      displayName: 'Add AzDevOps To Docker Group'
-
-    - script: |
-        echo "Docker group entry:"
-        getent group docker
+        sudo apt-get update --fix-missing
+        sudo apt-get install -y nodejs npm docker.io --fix-missing
          
-        echo ""
-        echo "AzDevOps user:"
-        id AzDevOps
-      displayName: 'Check Docker Group Membership'
-    
-
-    - script: |
-        echo "Process identity:"
-        id
+        sudo systemctl enable --now docker
          
-        echo "Docker group:"
-        getent group docker
+        # Allow the current Azure DevOps agent process to access Docker
+        sudo chmod 666 /var/run/docker.sock
          
-        echo "Docker binary:"
+        echo "Docker installation:"
         which docker
+        docker --version
          
-        echo "Docker version:"
-        docker --version || true
-         
-        echo "Docker daemon:"
-        sudo docker ps
-      displayName: Compare User Context  
+        echo "Docker access:"
+        docker ps
+      displayName: 'Install Tools and Enable Docker Access'
+        
+    - script: |
+        set -e
+           
+        if ! command -v az >/dev/null 2>&1; then
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        fi
+           
+        az --version
+      displayName: 'Install Azure CLI' 
     
     
     - task: Docker@2
