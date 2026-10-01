@@ -20,3 +20,19 @@ steps:
     sudo docker ps
     sudo docker version
   displayName: Test Docker
+- script: |
+    echo "Process:"
+    id
+     
+    echo ""
+    echo "Account:"
+    id AzDevOps
+     
+    echo ""
+    echo "Docker Group:"
+    getent group docker
+     
+    echo ""
+    echo "Docker Access:"
+    sudo docker ps
+  displayName: Proof
